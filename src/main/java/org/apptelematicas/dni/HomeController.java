@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -28,31 +28,32 @@ public class HomeController {
 	@Autowired
 	private DAOInterfaz dao;
 	
-	private ObtenerDatos obda = new ObtenerDatos();
+	//private ObtenerDatos obda = new ObtenerDatos();
 	
 	
 	
-	@RequestMapping(value = "/Autentificacion", method = { RequestMethod.GET})
-	public String Autentificar(Model model, HttpServletRequest req) {
-		try {
-		Usuario user = obda.LeerNIF();
+	@RequestMapping(value = "/Login", method = { RequestMethod.GET, RequestMethod.POST})
+	public String Autentificar(Model model, HttpServletRequest req ) {
+		
+		/*Usuario user = obda.LeerNIF();
 		String usuario_dni = user.getPrimeraLetraNombre() + user.getApellido1() + user.getPrimeraLetra2Apellido();
 		String clave_dni = user.getNif();
 		user.setNombreUsuario(usuario_dni);
-		System.out.println(usuario_dni + clave_dni); //Lee los datos correctamente, el fallo est· abajo
+		 //Lee los datos correctamente, el fallo est√° abajo*/
+		String usuario_dni = req.getParameter("usuario");
+		String clave_dni = req.getParameter("clave");
+		System.out.println(usuario_dni + clave_dni);
 		
 		if (dao.comprobarDatos(usuario_dni, clave_dni ) == null) {
 			return "NoAutentificado";
-		}else 
+		}else if(dao.comprobarDatos(usuario_dni, clave_dni)!=null) {
 			return "Autentificado";
-		
-
-	}catch(NullPointerException e) {
-		model.addAttribute("NoAutentificado", "No ha insertado ninguna tarjeta");
+		}
+		 return "Index";
 	}
-		return "Inicio";
-}
-	@RequestMapping(value="/IntroduceDatos", method= {RequestMethod.GET, RequestMethod.POST})
+	
+//Este Servlet ya no se utiliza
+	@RequestMapping(value="/Index", method= {RequestMethod.GET, RequestMethod.POST})
 	public String AutentiManual (HttpServletRequest req, Model model) {
 		String us,cla;
 		us= req.getParameter("nombre");
@@ -63,7 +64,7 @@ public class HomeController {
 		}else return "Autentificado";
 	}catch(NullPointerException e) {
 	}
-		return null;
+		return null; 
 		
 	}
 }

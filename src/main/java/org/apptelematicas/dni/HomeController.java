@@ -39,7 +39,7 @@ public class HomeController {
 		String usuario_dni = user.getPrimeraLetraNombre() + user.getApellido1() + user.getPrimeraLetra2Apellido();
 		String clave_dni = user.getNif();
 		user.setNombreUsuario(usuario_dni);
-		 //Lee los datos correctamente, el fallo está abajo*/
+		 */
 		String usuario_dni = req.getParameter("usuario");
 		String clave_dni = req.getParameter("clave");
 		System.out.println(usuario_dni + clave_dni);
